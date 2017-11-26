@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.linelib.LineGLView;
+
 public class MainActivity extends AppCompatActivity {
 
     // Used to load the 'native-lib' library on application startup.
+    private LineGLView mGLView;
     static {
         System.loadLibrary("native-lib");
     }
@@ -22,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
         tv.setText(stringFromJNI());
 
         FrameLayout fl_gl_layout = (FrameLayout) findViewById(R.id.fl_gl_layout);
+        mGLView = new LineGLView(this);
+        mGLView.requestFocus();
+        mGLView.setFocusableInTouchMode(true);
+        fl_gl_layout.addView(mGLView);
     }
 
     /**
