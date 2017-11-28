@@ -36,10 +36,8 @@ public class LineGLView extends GLSurfaceView {
             case MotionEvent.ACTION_MOVE:
                 float dy = y - mPreviousY;
                 float dx = x - mPreviousX;
-                for (SixPointedStar h : mRenderer.ha){
-                    h.yAngle += dx * TOUCH_SCALE_FACTOR;
-                    h.xAngle += dy * TOUCH_SCALE_FACTOR;
-                }
+                mRenderer.ha.yAngle += dx * TOUCH_SCALE_FACTOR;
+                mRenderer.ha.xAngle += dy * TOUCH_SCALE_FACTOR;
                 break;
         }
         mPreviousX = x;
@@ -48,13 +46,11 @@ public class LineGLView extends GLSurfaceView {
     }
 
     private class SceneRenderer implements GLSurfaceView.Renderer{
-        SixPointedStar[] ha=new SixPointedStar[6];//六角星数组
+        SixPointedStar ha;//六角星数组
         @Override
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
             GLES20.glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-            for (int i = 0; i < ha.length; ++i){
-                ha[i] = new SixPointedStar(LineGLView.this.getResources(), 0.2f, 0.5f, -0.3f * i);
-            }
+            ha = new SixPointedStar(LineGLView.this.getResources(), 0.2f, 0.5f, -0.3f);
             // 深度测试
             GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         }
@@ -74,9 +70,7 @@ public class LineGLView extends GLSurfaceView {
         @Override
         public void onDrawFrame(GL10 gl) {
             GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
-            for (SixPointedStar h : ha){
-                h.drawSelf();
-            }
+            ha.drawSelf();
         }
     }
 }
